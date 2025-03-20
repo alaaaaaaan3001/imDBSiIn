@@ -1,0 +1,116 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 23378454
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (0.02 sec)
+
+mysql> use Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE ARTICULO_CARRITO1 (
+    ->     articulo varchar (15) DEFAULT NULL
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE ARTICULO_CARRITO2 (
+    ->     articulo varchar (15) DEFAULT NULL
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO ARTICLUO_1 (articulo) VALUES
+    -> ('Azucar'),
+    -> ('Pan'),
+    -> ('Jugo'),
+    -> ('Refresco'),
+    -> ('Harina');
+ERROR 1146 (42S02): Table 'Alanlunax$Nueva.ARTICLUO_1' doesn't exist
+mysql> INSERT INTO ARTICULO_CARRITO1 (articulo) VALUES
+    -> ('Azucar'),
+    -> ('Pan'),
+    -> ('Jugo'),
+    -> ('Refresco'),
+    -> ('Harina');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO ARTICULO_CARRITO1 (articulo) VALUES
+    -> ('Azucar'),
+    -> ('Pan'),
+    -> ('Mantequilla'),
+    -> ('Queso'),
+    -> ('Manzana');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO ARTICULO_CARRITO2 (articulo) VALUES
+    -> ('Azucar'),
+    -> ('Pan'),
+    -> ('Mantequilla'),
+    -> ('Queso'),
+    -> ('Manzana');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> Show tables;
++---------------------------+
+| Tables_in_Alanlunax$Nueva |
++---------------------------+
+| ARTICULO_CARRITO1         |
+| ARTICULO_CARRITO2         |
++---------------------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM LEFT OUTER JOIN ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LEFT OUTER JOIN ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2' at line 1
+mysql> select * from left outer join articulo_carrito2 on articulo_carrito1 = articulo_carrito2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'left outer join articulo_carrito2 on articulo_carrito1 = articulo_carrito2' at line 1
+mysql> 
+mysql> SELECT * FROM LEFT OUTER JOIN ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LEFT OUTER JOIN ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2' at line 1
+mysql> SELECT * FROM LEFT OUTER JOIN ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LEFT OUTER JOIN ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2' at line 1
+mysql> UNION
+    -> SELECT * FROM RIGTH OUTER ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICULO_CARRITO2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'UNION
+SELECT * FROM RIGTH OUTER ARTICULO_CARRITO2 ON ARTICULO_CARRITO1 = ARTICUL' at line 1
+mysql> select * from left outer join ARTICULO_CARRITO2 on ARTICULO_CARRITO1 = ARTICULO_CARRITO2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'left outer join ARTICULO_CARRITO2 on ARTICULO_CARRITO1 = ARTICULO_CARRITO2' at line 1
+mysql> union
+    -> select * from rigth outer join ARTICULO_CARRITO2 on ARTICULO_CARRITO1 = ARTICULO_CARRITO2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'union
+select * from rigth outer join ARTICULO_CARRITO2 on ARTICULO_CARRITO1 = AR' at line 1
+mysql> select * from ARTICULO_CARRITO1 left outer join  ARTICULO_CARRITO2  on  ARTICULO_CARRITO1.articulo= ARTICULO_CARRITO2.articulo;
++-------------+-------------+
+| articulo    | articulo    |
++-------------+-------------+
+| Azucar      | Azucar      |
+| Pan         | Pan         |
+| Jugo        | NULL        |
+| Refresco    | NULL        |
+| Harina      | NULL        |
+| Azucar      | Azucar      |
+| Pan         | Pan         |
+| Mantequilla | Mantequilla |
+| Queso       | Queso       |
+| Manzana     | Manzana     |
++-------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> union
+    -> select * from ARTICULO_CARRITO1 rigth outer join ARTICULO_CARRITO2  on ARTICULO_CARRITO1.articulo = ARTICULO_CARRITO2.articulo;
