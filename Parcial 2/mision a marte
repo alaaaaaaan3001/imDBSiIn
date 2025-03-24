@@ -1,0 +1,67 @@
+mysql> CREATE TABLE Registro (
+    ->     Customer_ID INT,         
+    ->     Type_Phone VARCHAR(50), 
+    ->     Number VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> INSERT INTO Registro (Customer_ID, Type_Phone, Number) VALUES
+    -> (1001, 'Celular', '333-897-5421'),
+    -> (1001, 'Trabajo', '333-897-6542'),
+    -> (1001, 'Casa', '333-698-9874'),
+    -> (2002, 'Celular', '333-963-6544'),
+    -> (2002, 'Trabajo', '333-812-9856'),
+    -> (3003, 'Celular', '333-987-6541');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Etapa_de_desarollo (
+    ->     Desarollo varchar (50),
+    ->     Etapa varchar (50),
+    ->     Finalizado varchar (50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Etapa_de_desarollo (Desarollo, Etapa, Finalizado) values
+    -> ('RestAPI', '1', '01/02/2024'),
+    -> ('RestAPI', '2', '30/05/2024'),
+    -> ('RestAPI', '3', '29/06/2024'),
+    -> ('Web', '1', '28/10/2024'),
+    -> ('Web', '2', '20/11/2024'),
+    -> ('Web', '3', null),
+    -> ('App', '1', '30/01/2025'),
+    -> ('App', '2', null);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE  Requisito(
+    ->     Requisito VARCHAR(35)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Requisito (Requisito) VALUES
+    -> ('Geólogo'),
+    -> ('Astrónomo'),
+    -> ('Técnico');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Expedicion_a_Marte (
+    ->     ID_candidato int (50),
+    ->     Descripcion varchar (35)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> INSERT INTO Expedicion_a_Marte (ID_candidato, Descripcion) VALUES
+    -> (1001, 'Geólogo'),
+    -> (1001, 'Astrónomo'),
+    -> (1001, 'Bioquimico'),
+    -> (1001, 'Técnico'),
+    -> (2002, 'Cirujano'),
+    -> (2002, 'Mecánico'),
+    -> (2002, 'Géologo'),
+    -> (3003, 'Géologo'),
+    -> (3003, 'Astrónomo'),
+    -> (4004, 'Ingeniero');
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
