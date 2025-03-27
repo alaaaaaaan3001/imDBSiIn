@@ -1,0 +1,94 @@
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 847585
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (1.67 sec)
+
+mysql> USE Alanlunax$NuevA;
+ERROR 1044 (42000): Access denied for user 'Alanlunax'@'%' to database 'Alanlunax$NuevA'
+mysql> USE Alanlunax$Nueva;   
+Database changed
+mysql> CREATE TABLE PREMUTACIONES (
+    ->     CASO VARCHAR (50) NOT NULL,
+    ->     PRIMARY KEY (CASO)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO PREMUTACIONES VALUES
+    -> ('A'),
+    -> ('B'),
+    -> ('C')
+    -> ;
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT 
+    ->     CONCAT (a.CASO, ',', b.CASO, ',', c.CASO) AS PREMUTACION
+    ->     FROM
+    ->         (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') a 
+    ->     JOIN
+    ->         (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') b ON a.CASO <> b.CASO
+    ->     JOIN
+    ->         (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') c ON a.CASO <> C.CASO AND b.CASO <> c.CASO;
+ERROR 1054 (42S22): Unknown column 'C.CASO' in 'on clause'
+mysql> SELECT 
+    ->     CONCAT (a.CASO, ',', b.CASO, ',', c.CASO) AS PREMUTACION
+    ->     FROM
+    ->         (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') a 
+    ->     JOIN
+    ->         (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') b ON a.CASO <> b.CASO
+    ->     JOIN
+    ->         (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') c ON a.CASO <> c.CASO AND b.CASO <> c.CASO;  
++-------------+
+| PREMUTACION |
++-------------+
+| B,C,A       |
+| C,B,A       |
+| A,C,B       |
+| C,A,B       |
+| A,B,C       |
+| B,A,C       |
++-------------+
+6 rows in set (0.00 sec)
+
+mysql> 
+
+
+CREATE TABLE PREMUTACIONES (
+    CASO VARCHAR (50) NOT NULL,
+    PRIMARY KEY (CASO)
+);
+
+INSERT INTO PREMUTACIONES VALUES
+('A'),
+('B'),
+('C');
+
+SELECT 
+    CONCAT (a.CASO, ',', b.CASO, ',', c.CASO) AS PREMUTACION
+    FROM
+        (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') a 
+    JOIN
+        (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') b ON a.CASO <> b.CASO
+    JOIN
+        (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') c ON a.CASO <> c.CASO AND b.CASO <> c.CASO;        
