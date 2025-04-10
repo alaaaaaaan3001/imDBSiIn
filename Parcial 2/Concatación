@@ -1,0 +1,37 @@
+mysql> CREATE TABLE GRUPOS (
+    ->     SECUENCIA INT NOT NULL,
+    ->     SINTAXIS VARCHAR NOT NULL,
+    ->     PRIMARY KEY (SECUENCIA)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NOT NULL,
+    PRIMARY KEY (SECUENCIA)
+)' at line 3
+mysql> CREATE TABLE GRUPOS (
+    ->     SECUENCIA INT NOT NULL,
+    ->     SINTAXIS VARCHAR (12) NOT NULL,
+    ->     PRIMARY KEY (SECUENCIA)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO GRUPOS VALUES
+    -> (1, 'SELECT'),
+    -> (2, 'Producto'),
+    -> (3, 'Precio'),
+    -> (4, 'Disponibiidad'),
+    -> (5, 'FROM'),
+    -> (6, 'Productos'),
+    -> (7, 'WHERE'),
+    -> (8, 'Precio'),
+    -> (9, '>100');
+Query OK, 9 rows affected, 1 warning (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 1
+
+mysql> SELECT GROUP_CONCAT(SINTAXIS SEPARATOR ' ') AS SINTAXIS
+    -> FROM GRUPOS
+    -> ORDER BY SECUENCIA;
++----------------------------------------------------------------------+
+| SINTAXIS                                                             |
++----------------------------------------------------------------------+
+| SELECT Producto Precio Disponibiida FROM Productos WHERE Precio >100 |
++----------------------------------------------------------------------+
+1 row in set (0.00 sec)
