@@ -1,0 +1,38 @@
+mysql> CREATE TABLE PROMEDIO (
+    ->     DESARROLLO VARCHAR (18) NOT NULL,
+    ->     TERMINACION DATE NOT NULL,
+    ->     PRIMARY KEY (DESARROLLO, TERMINACION)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO PROMEDIO VALUES
+    -> ('ResetAPI', '2024-06-1'),
+    -> ('ResetAPI', '2024-06-14'),
+    -> ('ResetAPI', '2024-06-15'),
+    -> ('Web', '2024-06-01'),
+    -> ('Web', '2024-06-02'),
+    -> ('Web', '2024-06-19'),
+    -> ('App', '2024-06-01'),
+    -> ('App', '2024-05-15'),
+    -> ('App', '2024-06-30');
+Query OK, 9 rows affected (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+mysql> SELECT
+    ->     f1.DESARROLLO,
+    ->     ROUND(AVG(DATEDIFF(f1.TERMINACION, f2.TERMINACION))) AS PROMEDIO
+    -> FROM PROMEDIO f1
+    -> JOIN PROMEDIO f2
+    ->     ON f1.DESARROLLO = f2.DESARROLLO AND f2.TERMINACION = (
+    ->         SELECT MAX(f3.TERMINACION)
+    ->         FROM PROMEDIO f3
+    ->         WHERE f3.DESARROLLO = f1.DESARROLLO AND f3.TERMINACION < f1.TERMINACION
+    ->     )
+    -> GROUP BY f1.DESARROLLO;
++------------+----------+
+| DESARROLLO | PROMEDIO |
++------------+----------+
+| App        |       23 |
+| ResetAPI   |        7 |
+| Web        |        9 |
++------------+----------+
+3 rows in set (0.01 sec)
+mysql> 
