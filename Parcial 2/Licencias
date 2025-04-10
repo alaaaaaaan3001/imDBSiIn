@@ -1,0 +1,103 @@
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12542075
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (0.03 sec)
+
+mysql> use Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE Licencias (
+    ->     ID_EMPLEADO INT (18) NOT NULL,
+    ->     Licencia VARCHAR (14) NOT NULL,
+    ->     PRIMARY KEY (ID_EMPLEADO,Licencia)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> INSERT INTO Licencias VALUES
+    -> (1001, 'Tipo A'),
+    -> (1001, 'Tipo B'),
+    -> (1001, 'Tipo C'),
+    -> (2002, 'Tipo A'),
+    -> (2002, 'Tipo B'),
+    -> (2002, 'Tipo C'),
+    -> (3003, 'Tipo A'),
+    -> (3003, 'Tipo D'),
+    -> (4004, 'Tipo A'),
+    -> (4004, 'Tipo B'),
+    -> (4004, 'Tipo D'),
+    -> (5005, 'Tipo A'),
+    -> (5005, 'Tipo B'),
+    -> (5005, 'Tipo D');
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> SELECT
+    ->     l1.ID_EMPLEADO AS ID_EMPLEADO_1,
+    ->     l2.ID_EMPLEADO AS ID_EMPLEADO_2,
+    ->     COUNT (*) AS Coincidencias
+    -> FROM 
+    ->     Licencias l1
+    -> JOIN
+    ->     Licencias l2
+    -> ON
+    ->     l1.Licencia = l2.Licencia
+    -> AND
+    ->     l1.ID_EMPLEADO != l2.ID_EMPLEADO
+    -> GROUP BY 
+    ->     l1.ID_EMPLEADO, l2.ID_EMPLEADO
+    -> HAVING
+    ->     Coincidencias = 3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+ near '*) AS Coincidencias
+FROM 
+    Licencias l1
+JOIN
+    Licencias l2
+ON
+    l1.Licen' at line 4
+mysql> SELECT
+    ->     l1.ID_EMPLEADO AS ID_EMPLEADO_1,
+    ->     l2.ID_EMPLEADO AS ID_EMPLEADO_2,
+    ->     COUNT(*) AS Coincidencias
+    -> FROM 
+    ->     Licencias l1
+    -> JOIN
+    ->     Licencias l2
+    -> ON
+    ->     l1.Licencia = l2.Licencia
+    -> AND
+    ->     l1.ID_EMPLEADO != l2.ID_EMPLEADO
+    -> GROUP BY 
+    ->     l1.ID_EMPLEADO, l2.ID_EMPLEADO
+    -> HAVING
+    ->     Coincidencias = 3;
++---------------+---------------+---------------+
+| ID_EMPLEADO_1 | ID_EMPLEADO_2 | Coincidencias |
++---------------+---------------+---------------+
+|          2002 |          1001 |             3 |
+|          1001 |          2002 |             3 |
+|          5005 |          4004 |             3 |
+|          4004 |          5005 |             3 |
++---------------+---------------+---------------+
+4 rows in set (0.00 sec)
+mysql> 
