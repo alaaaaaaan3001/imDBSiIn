@@ -1,0 +1,60 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (0.02 sec)
+
+mysql> USE Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE CasosDePruebas (
+    ->     CASO VARCHAR (20) NOT NULL,
+    ->     PRIMARY KEY (CASO)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO CasosDePruebas VALUES
+    -> ('A')
+    -> ('B')
+    -> ('C');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+ near '('B')
+('C')' at line 3
+mysql> INSERT INTO CasosDePrueba Values
+    -> ('A'),
+    -> ('B'),
+    -> ('C');.
+ERROR 1146 (42S02): Table 'Alanlunax$Nueva.CasosDePrueba' doesn't exist
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+ near '.' at line 1
+mysql> INSERT INTO CasosDePruebas VALUES
+    -> ('A'),
+    -> ('B'),
+    -> ('C');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> SELECT
+    ->     CONCAT(a.CASO, ',', b.CASO, ',', c.CASO) AS PERMUTACION
+    -> FROM
+    ->     (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') a
+    -> JOIN
+    ->     (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') b ON a.CASO <> b.CASO
+    -> JOIN
+    ->     (SELECT 'A' AS CASO UNION ALL SELECT 'B' UNION ALL SELECT 'C') c ON a.CASO <> c.CASO AND b.CASO <> c.CASO;
++-------------+
+| PERMUTACION |
++-------------+
+| B,C,A       |
+| C,B,A       |
+| A,C,B       |
+| C,A,B       |
+| A,B,C       |
+| B,A,C       |
++-------------+
+6 rows in set (0.00 sec)
+mysql> 
