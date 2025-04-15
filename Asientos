@@ -1,0 +1,67 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (1.86 sec)
+
+mysql> use Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE Asientos(
+    ->     NUM_ASIENTO INTEGER
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Asientos VALUES
+    -> (7),(13),(14),(15),(27),(28),(29),(30),(31),(32),(33),(34)(35),(52),(53),(54);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(35),(52),(53),(54)' at line 2
+mysql> INSERT INTO Asientos VALUES 
+    -> (7),(13),(14),(15),(27),(28),(29),(30), (31),(32),(33),(34),(35),(52),(53),(54);
+Query OK, 16 rows affected (0.01 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql> SELECT
+    ->     (MAX(NUM_ASIENTO) - MIN(NUM_ASIENTO) + 1) - COUNT(*) AS DISPONIBLES
+    -> FROM Asientos;
++-------------+
+| DISPONIBLES |
++-------------+
+|          32 |
++-------------+
+1 row in set (0.00 sec)
+mysql> SELECT
+    ->     COUNT(CASE WHEN NUM_ASIENTO % 2 = 0 THEN 1 END) AS PARES,
+    ->     COUNT(CASE WHEN NUM_ASIENTO % 2 != 0 THEN 1 END) AS IMPARES
+    -> FROM Asientos;
++-------+---------+
+| PARES | IMPARES |
++-------+---------+
+|     7 |       9 |
++-------+---------+
+1 row in set (0.00 sec)
+mysql> SET @prev := 0;
+Query OK, 0 rows affected (0.00 sec)
+mysql> SELECT espacio_inicio, espacio_final
+    -> FROM (
+    ->     SELECT
+    ->         @prev + 1 AS espacio_inicio,
+    ->         NUM_ASIENTO - 1 AS espacio_final,
+    ->         @prev := NUM_ASIENTO
+    ->     FROM Asientos
+    ->     ORDER BY NUM_ASIENTO
+    -> ) subquery
+    -> WHERE espacio_inicio <= espacio_final;
++----------------+---------------+
+| espacio_inicio | espacio_final |
++----------------+---------------+
+|              1 |             6 |
+|              8 |            12 |
+|             16 |            26 |
+|             36 |            51 |
++----------------+---------------+
+4 rows in set, 1 warning (0.00 sec)
+mysql> 
