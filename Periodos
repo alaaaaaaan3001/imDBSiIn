@@ -1,0 +1,47 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (1.84 sec)
+
+mysql> use Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE Periodos (
+    ->      INICIO DATE NOT NULL,
+    ->      FINAL DATE NOT NULL
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO Periodos VALUES
+    -> ('2025-01-01', '2025-01-05'),
+    -> ('2025-01-03', '2025-01-09'),
+    -> ('2025-01-10', '2025-01-11'),
+    -> ('2025-01-12', '2025-01-16'),
+    -> ('2025-01-15', '2025-01-19');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+mysql> SELECT MIN(Inicio) AS Inicio, MAX(Final) AS Final
+    -> FROM Periodos
+    -> GROUP BY (SELECT COUNT (*) FROM Periodos p2 WHERE p2.Final < Periodos.Inicio)
+    -> ORDER BY Inicio;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that correspo
+nds to your MySQL server version for the right syntax to use near '*) FROM Periodos p2 W
+HERE p2.Final < Periodos.Inicio)
+ORDER BY Inicio' at line 3
+mysql> SELECT MIN(Inicio) AS Inicio, MAX(Final) AS Final
+    -> FROM Periodos
+    -> GROUP BY (SELECT COUNT(*) FROM Periodos p2 WHERE p2.Final < Periodos.Inicio)
+    -> ORDER BY Inicio;
++------------+------------+
+| Inicio     | Final      |
++------------+------------+
+| 2025-01-01 | 2025-01-09 |
+| 2025-01-10 | 2025-01-11 |
+| 2025-01-12 | 2025-01-19 |
++------------+------------+
+3 rows in set (0.00 sec)
+mysql> 
