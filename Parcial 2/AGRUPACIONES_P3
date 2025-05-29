@@ -1,0 +1,48 @@
+CREATE TABLE Agrupaciones (
+    Paso int,
+    Estado varchar (16)
+);
+
+Insert into Agrupaciones (Paso, Estado) values 
+(1, 'paso'),
+(2, 'paso'),
+(3, 'paso'),
+(4, 'paso'),
+(5, 'fallo'),
+(6, 'fallo'),
+(7, 'fallo'),
+(8, 'fallo'),
+(9, 'fallo'),
+(10, 'paso'),
+(11, 'paso'),
+(12, 'paso');
+
+
+WITH RankedData AS (
+    SELECT
+        Paso,
+        Estado,
+        ROW_NUMBER() OVER (ORDER BY Paso) AS rn_total,
+        ROW_NUMBER() OVER (PARTITION BY Estado ORDER BY Paso) AS rn_estado
+    FROM
+        Agrupaciones
+),
+GroupedData AS (
+    SELECT
+        Paso,
+        Estado,
+        rn_total - rn_estado AS group_id
+    FROM
+        RankedData
+)
+SELECT
+    MIN(Paso) AS "Paso min",
+    MAX(Paso) AS "Paso Max",
+    Estado AS Estado,
+    COUNT(*) AS Cuenta
+FROM
+    GroupedData
+GROUP BY
+    Estado, group_id
+ORDER BY
+    "Paso min";
