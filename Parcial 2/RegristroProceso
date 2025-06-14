@@ -1,0 +1,70 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (1.68 sec)
+
+mysql> USE Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE FLUJOTRABAJO (
+    ->     FLUJO VARCHAR(20) NOT NULL,
+    ->     PASO INT NOT NULL,
+    ->     ESTADO VARCHAR(15) NOT NULL,
+    ->     PRIMARY KEY (FLUJO, PASO)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO FLUJOTRABAJO VALUES
+    -> ('Alpha', 1, 'Error'),
+    -> ('Alpha', 2, 'Finalizado'),
+    -> ('Alpha', 3, 'Corriendo'),
+    -> ('Bravo', 1, 'Finalizado'),
+    -> ('Bravo', 2, 'Finalizado'),
+    -> ('Charlie', 1, 'Corriendo'),
+    -> ('Charlie', 2, 'Corriendo'),
+    -> ('Delta' 1, 'Error'),
+    -> ('Delta' 2, 'Error'),
+    -> ('Echo', 1, 'Corriendo'),
+    -> ('Echo', 2, 'Finalizando');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, 'Error'),
+('Delta' 2, 'Error'),
+('Echo', 1, 'Corriendo'),
+('Echo', 2, 'Finali' at line 9
+mysql> INSERT INTO FLUJOTRABAJO VALUES
+    -> ('Alpha', 1, 'Error'),
+    -> ('Alpha', 2, 'Finalizado'),
+    -> ('Alpha', 3, 'Corriendo'),
+    -> ('Bravo', 1, 'Finalizado'),
+    -> ('Bravo', 2, 'Finalizado'),
+    -> ('Charlie', 1, 'Corriendo'),
+    -> ('Charlie', 2, 'Corriendo'),
+    -> ('Delta', 1, 'Error'),
+    -> ('Delta', 2, 'Error'),
+    -> ('Echo', 1, 'Corriendo'),
+    -> ('Echo', 2, 'Finalizado');
+Query OK, 11 rows affected (0.01 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+mysql> SELECT FLUJO,
+    ->     CASE
+    ->         WHEN COUNT(DISTINCT ESTADO) = 1 THEN MAX(ESTADO)
+    ->         WHEN SUM(ESTADO = 'Eroor') > 0 THEN 'Inderterminado'
+    ->         ELSE 'Corriendo'
+    ->     END AS ESTADO
+    -> FROM FLUJOTRABAJO
+    -> GROUP BY FLUJO;
++---------+------------+
+| FLUJO   | ESTADO     |
++---------+------------+
+| Alpha   | Corriendo  |
+| Bravo   | Finalizado |
+| Charlie | Corriendo  |
+| Delta   | Error      |
+| Echo    | Corriendo  |
++---------+------------+
+5 rows in set (0.01 sec)
+mysql> 

@@ -1,0 +1,52 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| Alanlunax$Nueva    |
+| Alanlunax$default  |
+| information_schema |
+| performance_schema |
++--------------------+
+4 rows in set (0.06 sec)
+
+mysql> USE Alanlunax$Nueva;
+Database changed
+mysql> CREATE TABLE PRODUCTOS (
+    ->     PRODUCTO VARCHAR (15) NOT NULL,
+    ->     CANTIDAD INT NOT NULL,
+    ->     PRIMARY KEY (PRODUCTO, CANTIDAD)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO PRODUCTOS VALUES
+    -> ('Lapiz',3),
+    -> ('Borrador',4),
+    -> ('Cuaderno',2);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> SELECT 'Lapiz', AS PRODUCTOS, 1 AS CANTIDAD FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS t 
+    -> UNION ALL
+    -> SELECT 'Borrador', AS PRODUCTOS, 1 AS CANTIDAD FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) AS t 
+    -> UNION ALL
+    -> SELECT 'Cuaderno', 1 FROM (SELECT 1 UNION ALL SELECT 2) AS t;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+ near 'AS PRODUCTOS, 1 AS CANTIDAD FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3' at line 1
+mysql> SELECT 'Lápiz' AS PRODUCTOS, 1 AS CANTIDAD FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS t
+    -> UNION ALL
+    -> SELECT 'Borrador', 1 FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) AS t
+    -> UNION ALL
+    -> SELECT 'Cuaderno', 1 FROM (SELECT 1 UNION ALL SELECT 2) AS t;
++-----------+----------+
+| PRODUCTOS | CANTIDAD |
++-----------+----------+
+| Lápiz     |        1 |
+| Lápiz     |        1 |
+| Lápiz     |        1 |
+| Borrador  |        1 |
+| Borrador  |        1 |
+| Borrador  |        1 |
+| Borrador  |        1 |
+| Cuaderno  |        1 |
+| Cuaderno  |        1 |
++-----------+----------+
+9 rows in set (0.00 sec)
+mysql> 

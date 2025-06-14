@@ -1,0 +1,26 @@
+CREATE TABLE TRABAJO (
+    ID INT (18) NOT NULL,
+    TRABAJO VARCHAR (14) NOT NULL,
+    MISIONES INT (18) NOT NULL
+);
+
+INSERT INTO TRABAJO (ID, TRABAJO, MISIONES)VALUES
+(1, 'Navegador', 6),
+(2, 'Navegador', 12),
+(3, 'Navegador',17),
+(4, 'Geólogo', 21),
+(5, 'Geólogo', 9),
+(6, 'Geólogo', 8),
+(7, 'Técnico', 13),
+(8, 'Técnico', 2);
+
+SELECT
+    m1.TRABAJO,
+    (SELECT ID FROM TRABAJO m2
+    WHERE m2.TRABAJO = m1.TRABAJO
+    ORDER BY MISIONES DESC LIMIT 1) AS Experimentados,
+    (SELECT ID FROM MISIONES m3
+    WHERE m3.TRABAJO = m1.TRABAJO
+    ORDER BY MISIONES ASC LIMIT 1) AS Menos_Experimentados
+FROM MISIONES m1
+GROUP BY TRABAJO;
